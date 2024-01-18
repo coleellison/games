@@ -1,5 +1,4 @@
 """
-
 We will arbitarily assign point scores to each hand type for comparison purposes:
 
 Royal flush: 9
@@ -12,13 +11,14 @@ Three of a kind: 3
 Two pair: 2
 One pair: 1
 High card: 0
-
 """
 
+#separate cards into their suits and numeric values
 suits = lambda hand: [i[1] for i in hand]
 nums = lambda hand: [i[0] for i in hand]
 
 def royalflush(hand):
+    #10, J, Q, K, A of the same suit
     s = suits(hand)
     flush = True
     for i in range(4):
@@ -33,6 +33,7 @@ def royalflush(hand):
     return [9]
 
 def straightflush(hand):
+    #five consecutive cards of the same suit
     s = suits(hand)
     flush = True
     for i in range(4):
@@ -53,6 +54,7 @@ def straightflush(hand):
     return [8, n[-1]]
     
 def fourofakind(hand):
+    #four of the same number
     n = nums(hand)
     counts = [(n.count(i), i) for i in range(2,15)]
     counts.sort(reverse=True)
@@ -61,6 +63,7 @@ def fourofakind(hand):
     return False
 
 def fullhouse(hand):
+    #three of the same number, two of the same number
     n = nums(hand)
     counts = [(n.count(i), i) for i in range(2,15)]
     counts.sort(reverse=True)
@@ -69,6 +72,7 @@ def fullhouse(hand):
     return False
 
 def flush(hand):
+    #all suits the same
     s = suits(hand)
     for i in range(4):
         if s[i] != s[i + 1]:
@@ -79,6 +83,7 @@ def flush(hand):
     return n
 
 def straight(hand):
+    #five consecutive cards
     n = nums(hand)
     n.sort()
     straight = True
@@ -92,6 +97,7 @@ def straight(hand):
     return [4, n[-1]]
 
 def threeofakind(hand):
+    #three of the same number
     n = nums(hand)
     counts = [(n.count(i), i) for i in range(2,15)]
     counts.sort(reverse=True)
@@ -106,6 +112,7 @@ def threeofakind(hand):
     return False
 
 def twopairs(hand):
+    #two groups of two matching numbers
     n = nums(hand)
     counts = [(n.count(i), i) for i in range(2,15)]
     counts.sort(reverse=True)
@@ -114,6 +121,7 @@ def twopairs(hand):
     return False
 
 def onepair(hand):
+    #two matching numbers
     n = nums(hand)
     counts = [(n.count(i), i) for i in range(2,15)]
     counts.sort(reverse=True)
@@ -122,12 +130,25 @@ def onepair(hand):
     return False
 
 def highcard(hand):
+    #nothing better :/
     n = nums(hand)
     n.sort(reverse=True)
     n.insert(0,0)
     return n
 
 def score(hand):
+    """scores hand according to type, then value
+
+    Parameters
+    ----------
+    hand : list
+        input hand
+
+    Returns
+    -------
+    list
+        a list containing all data needed to rank the hand
+    """
     if royalflush(hand):
         return royalflush(hand)
     if straightflush(hand):
@@ -148,7 +169,7 @@ def score(hand):
         return onepair(hand)
     return highcard(hand)
 
-card_names = {
+card_names = { #for show_score
     2: "2",
     3: "3",
     4: "4",
@@ -165,6 +186,13 @@ card_names = {
 }
 
 def show_score(hand):
+    """conveys a relevant and abridged score to user
+
+    Parameters
+    ----------
+    hand : list
+        input hand
+    """
     val = score(hand)
     hand_names = {
     9: f"Royal flush!",
