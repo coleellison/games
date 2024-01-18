@@ -1,6 +1,13 @@
 import random
 
 def get_sorted_deck():
+    """generates a sorted deck
+
+    Returns
+    -------
+    list
+        fresh set of 52 unshuffled cards
+    """
     deck = []
     suits = ["C", "D", "H", "S"]
     for suit in suits:
@@ -10,11 +17,37 @@ def get_sorted_deck():
     return deck
 
 def get_shuffled_deck():
+    """generates a shuffled deck
+
+    Returns
+    -------
+    list
+        shuffled full deck
+    """
     deck = get_sorted_deck()
     random.shuffle(deck)
     return deck
 
 def draw(n, input_deck = get_shuffled_deck()):
+    """places new cards in hand and removes them from the deck
+
+    Parameters
+    ----------
+    n : int
+        number of cards requested
+    input_deck : list, optional
+        deck to be drawn from, by default will call for a fresh deck if no input given
+
+    Returns
+    -------
+    tuple
+        package of new cards and updated deck
+
+    Raises
+    ------
+    Exception
+        if insufficient cards are in the deck
+    """
     if n < 1:
         return -1
     elif type(n) != int:
@@ -27,6 +60,13 @@ def draw(n, input_deck = get_shuffled_deck()):
         return (drawn_cards, new_deck)
 
 def initiate_round():
+    """
+
+    Returns
+    -------
+    tuple
+        package of two five-card hands and the remaining cards of the deck
+    """
     current_deck = get_shuffled_deck()
     draw1 = draw(5, current_deck)
     p1_hand = draw1[0]
